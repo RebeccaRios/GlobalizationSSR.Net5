@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Globalization;
+using GlobalizationSSR.Net5.Client.Extensions;
 
 namespace GlobalizationSSR.Net5.Client
 {
@@ -20,7 +22,7 @@ namespace GlobalizationSSR.Net5.Client
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddScoped<IWeatherForrecastService, WeatherForecastService>();
-            builder.AddLocalization();
+            builder.Services.AddLocalization();
             await builder.Build().RunAsync();
 
             var host = builder.Build();
