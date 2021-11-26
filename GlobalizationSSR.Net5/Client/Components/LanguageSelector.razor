@@ -1,0 +1,23 @@
+﻿<img src="~/img/arg.svg" class="flag" @onclick="@(() => SetCulture("pt"))"/>
+<img src="~/img/br.svg" class="flag" @onclick="@(() => SetCulture("en"))" />
+<img src="~/img/gb.svg" class="flag" @onclick="@(() => SetCulture("es"))" />
+
+@inject IJSRuntime JSRuntime;
+@inject NavigationManager NavigationManager;
+
+
+@code {
+    private CultureInfo selectedLanguage = new CultureInfo("pt");
+    private void SetCulture(string language)
+    {
+        selectedLanguage = new CultureInfo(language);
+
+        if(CultureInfo.CurrentCulture != selectedLanguage)
+        {
+            var js = (IJSInProcessRuntime)JSRuntime;
+            js.InvokeVoid("blazorCulture.set", selectedLanguage.Name);
+            NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+        }
+    }
+
+}
