@@ -9,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
 using System.Globalization;
+using Microsoft.AspNetCore.Http.Extensions;
+using System.Collections.Generic;
 
 namespace GlobalizationSSR.Net5.Server
 {
@@ -29,11 +31,30 @@ namespace GlobalizationSSR.Net5.Server
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddLocalization();
+            services.AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            // AQUI EU LISTO OS IDIOMAS SUPORTADOS
+            var cultures = new List<CultureInfo> {
+                new CultureInfo("en"),
+                new CultureInfo("es"),
+                new CultureInfo("pt")
+            };
+
+            // AQUI EU SETO OS IDIOMAS SUPORTADOS E O IDIOMA DEFAULT DA APLICAÇÃO
+            app.UseRequestLocalization(options => 
+            {
+                options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("en");
+                options.SupportedCultures = cultures;
+                options.SupportedUICultures = cultures;
+
+                // O IDIOMA SERÁ TROCADO ATRAVES DO QUERYSTRING culture (ex: https://localhost:5001/?culture=es)
+                // O PRÓPRIO DOTNET GERENCIA ISSO QUANDO USAMOS ESSE PARÂMETRO
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

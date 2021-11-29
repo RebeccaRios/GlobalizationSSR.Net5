@@ -1,22 +1,26 @@
-﻿<img src="img/arg.svg" class="flag" @onclick="@(() => SetCulture("pt"))"/>
-<img src="img/br.svg" class="flag" @onclick="@(() => SetCulture("en"))" />
-<img src="img/gb.svg" class="flag" @onclick="@(() => SetCulture("es"))" />
+﻿<img src="img/arg.svg" class="flag" @onclick="@(() => SetCulture("es"))"/>
+<img src="img/br.svg" class="flag" @onclick="@(() => SetCulture("pt"))" />
+<img src="img/gb.svg" class="flag" @onclick="@(() => SetCulture("en"))" />
+
+<p>@localizer["Greeting"]</p>
 
 @inject IJSRuntime JSRuntime;
 @inject NavigationManager NavigationManager;
-
+@inject IStringLocalizer<Resource> localizer;
 
 @code {
-    private CultureInfo selectedLanguage = new CultureInfo("pt");
+
     private void SetCulture(string language)
     {
-        selectedLanguage = new CultureInfo(language);
-
-        if(CultureInfo.CurrentCulture != selectedLanguage)
+        if(CultureInfo.CurrentCulture.ToString() != language)
         {
-            var js = (IJSInProcessRuntime)JSRuntime;
-            js.InvokeVoid("blazorCulture.set", selectedLanguage.Name);
-            NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+            CultureInfo selectedLanguage = new CultureInfo(language);
+            CultureInfo.CurrentCulture = selectedLanguage;
+            CultureInfo.DefaultThreadCurrentCulture = selectedLanguage;
+            CultureInfo.DefaultThreadCurrentUICulture = selectedLanguage;
+
+            // AQUI VOCÊ NAVEGA PARA A ROTA ATUAL, PORÉM COMO O PARÂMETRO culture SETADO COM O IDIOMA SELECIONADOO
+            //NavigationManager.NavigateTo("algum lugar", forceLoad: true);
         }
     }
 
