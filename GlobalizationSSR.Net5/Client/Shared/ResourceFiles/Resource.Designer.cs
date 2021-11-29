@@ -68,5 +68,14 @@ namespace GlobalizationSSR.Net5.Client.Shared.ResourceFiles {
                 return ResourceManager.GetString("Greeting", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Previsão do Tempo.
+        /// </summary>
+        public static string WeatherForecast {
+            get {
+                return ResourceManager.GetString("WeatherForecast", resourceCulture);
+            }
+        }
     }
 }

@@ -120,4 +120,7 @@
   <data name="Greeting" xml:space="preserve">
     <value>Testando</value>
   </data>
+  <data name="WeatherForecast" xml:space="preserve">
+    <value>Previsão do Tempo</value>
+  </data>
 </root>
